@@ -2,8 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'; // Home component
-import LoginForm from './components/LoginForm'; // Login component
-
+import LoginForm from './components/LoginForm'; 
 const App = () => {
     return (
         <Router>

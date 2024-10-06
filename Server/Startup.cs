@@ -1,24 +1,46 @@
-public void ConfigureServices(IServiceCollection services)
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Portfolio.Services;
+namespace Portfolio
 {
-    services.AddCors(options =>
+    public class Startup
     {
-        options.AddPolicy("AllowAllOrigins", builder =>
+        public void ConfigureServices(IServiceCollection services)
         {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
-    });
+        
+            services.AddControllers();
 
-    services.AddControllers();
-}
+        
+            services.AddScoped<IUserService, UserService>();
 
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-    app.UseRouting();
-    app.UseCors("AllowAllOrigins");
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-    });
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts(); 
+            }
+
+            app.UseHttpsRedirection(); 
+            app.UseStaticFiles();
+
+            app.UseRouting(); 
+
+            app.UseAuthentication(); 
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
 }
