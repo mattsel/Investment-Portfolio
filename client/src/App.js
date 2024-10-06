@@ -1,28 +1,17 @@
 // src/App.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home'; // Home component
+import LoginForm from './components/LoginForm'; // Login component
 
 const App = () => {
-    const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/test');
-                setMessage(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
     return (
-        <div>
-            <h1>React and C# Connection</h1>
-            <p>{message}</p>
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginForm />} />
+            </Routes>
+        </Router>
     );
 };
 

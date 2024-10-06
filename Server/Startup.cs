@@ -1,40 +1,24 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace SimpleApi
+public void ConfigureServices(IServiceCollection services)
 {
-    public class Startup
+    services.AddCors(options =>
     {
-        public void ConfigureServices(IServiceCollection services)
+        options.AddPolicy("AllowAllOrigins", builder =>
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
-            });
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+    });
 
-            services.AddControllers();
-        }
+    services.AddControllers();
+}
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-            app.UseCors("AllowAllOrigins");
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    app.UseRouting();
+    app.UseCors("AllowAllOrigins");
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
 }
